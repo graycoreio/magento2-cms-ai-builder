@@ -22,7 +22,7 @@ This module adds an AI-powered visual editor to Magento 2's CMS pages, allowing 
 
 1. Download the package:
 ```bash
-composer require graycore/magento2-cors
+composer require graycore/magento2-cms-ai-builder
 ```
 
 2. Configure the package:
