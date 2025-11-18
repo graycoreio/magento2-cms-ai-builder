@@ -11,6 +11,9 @@ use Rs\Json\Patch;
 
 class PatchApplier
 {
+    /**
+     * @param Json $json
+     */
     public function __construct(
         private readonly Json $json
     ) {

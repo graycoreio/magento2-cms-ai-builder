@@ -13,10 +13,10 @@ use Magento\Store\Model\ScopeInterface;
 
 class Config extends AbstractHelper
 {
-    const XML_PATH_ENABLED = 'ai_cms_builder/general/enabled';
-    const XML_PATH_OPENAI_API_KEY = 'ai_cms_builder/general/openai_api_key';
-    const XML_PATH_OPENAI_MODEL = 'ai_cms_builder/general/openai_model';
-    const XML_PATH_COMPONENT_REGISTRY = 'ai_cms_builder/component_registry/registry_json';
+    public const XML_PATH_ENABLED = 'ai_cms_builder/general/enabled';
+    public const XML_PATH_OPENAI_API_KEY = 'ai_cms_builder/general/openai_api_key';
+    public const XML_PATH_OPENAI_MODEL = 'ai_cms_builder/general/openai_model';
+    public const XML_PATH_COMPONENT_REGISTRY = 'ai_cms_builder/component_registry/registry_json';
 
     /**
      * @param Context $context

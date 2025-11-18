@@ -118,5 +118,4 @@ class PatchGenerator
             throw $e;
         }
     }
-
 }

@@ -4,8 +4,8 @@
  */
 ?>
 <script>
-window.CmsAiBuilderUrl = '<?= $block->getUrl('CmsAiBuilder/generate/index') ?>';
-window.CmsAiBuilderAssetsPath = '<?= $block->getViewFileUrl('Graycore_CmsAiBuilder::js/admin-preview') ?>';
+window.CmsAiBuilderUrl = '<?= $escaper->escapeUrl($block->getUrl('CmsAiBuilder/generate/index')) ?>';
+window.CmsAiBuilderAssetsPath = '<?= $escaper->escapeUrl($block->getViewFileUrl('Graycore_CmsAiBuilder::js/admin-preview')) ?>';
 
 // Configure Monaco environment for web workers
 window.MonacoEnvironment = {

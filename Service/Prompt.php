@@ -6,9 +6,11 @@ declare(strict_types=1);
 
 namespace Graycore\CmsAiBuilder\Service;
 
-class Prompt {
+class Prompt
+{
     
-    public function getSystemPrompt(string $componentRegistry):string {
+    public function getSystemPrompt(string $componentRegistry):string
+    {
         return <<<PROMPT
 You are an AI assistant that generates Angular component schemas compatible with the Daffodil schema-renderer.
 

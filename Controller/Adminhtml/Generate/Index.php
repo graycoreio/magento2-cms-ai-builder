@@ -19,7 +19,7 @@ class Index extends Action implements HttpPostActionInterface
     /**
      * Authorization level of a basic admin session
      */
-    const ADMIN_RESOURCE = 'Magento_Cms::page';
+    public const ADMIN_RESOURCE = 'Magento_Cms::page';
 
     /**
      * @param Context $context
@@ -76,6 +76,7 @@ class Index extends Action implements HttpPostActionInterface
                     }
                 } catch (\Exception $e) {
                     // Page not found, fall through to use request history
+                    // phpcs:ignore Magento2.CodeAnalysis.EmptyBlock
                 }
             }
 
