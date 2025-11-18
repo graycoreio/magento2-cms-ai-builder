@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ai_cms_builder>
+            <general>
+                <enabled>0</enabled>
+                <openai_model>gpt-4</openai_model>
+            </general>
+            <component_registry>
+                <registry_json><![CDATA[{"components": []}]]></registry_json>
+            </component_registry>
+        </ai_cms_builder>
+    </default>
+</config>

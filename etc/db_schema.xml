@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="cms_page" resource="default" engine="innodb" comment="CMS Page Table">
+        <column xsi:type="text" name="ai_prompt" nullable="true" comment="AI Builder Prompt"/>
+        <column xsi:type="mediumtext" name="ai_schema_json" nullable="true" comment="AI Generated Schema JSON"/>
+        <column xsi:type="mediumtext" name="ai_conversation_history" nullable="true" comment="AI Conversation History JSON"/>
+    </table>
+</schema>

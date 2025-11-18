@@ -1,0 +1,9 @@
+{
+    "cms_page": {
+        "column": {
+            "ai_prompt": true,
+            "ai_schema_json": true,
+            "ai_conversation_history": true
+        }
+    }
+}
