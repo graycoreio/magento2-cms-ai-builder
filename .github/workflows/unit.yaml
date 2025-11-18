@@ -37,4 +37,4 @@ jobs:
       with:
         php_version: ${{ matrix.php_version }}
         composer_auth: ${{ secrets.COMPOSER_AUTH }}
-        test_command: composer run unit-test
+        test_command: composer run test:unit
