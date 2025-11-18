@@ -7,7 +7,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Graycore::config" title="AI CMS Builder Configuration"/>
+                            <resource id="Graycore_CmsAiBuilder::config" title="AI CMS Builder Configuration"/>
                         </resource>
                     </resource>
                 </resource>
