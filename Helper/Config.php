@@ -17,6 +17,11 @@ class Config extends AbstractHelper
     public const XML_PATH_OPENAI_API_KEY = 'ai_cms_builder/general/openai_api_key';
     public const XML_PATH_OPENAI_MODEL = 'ai_cms_builder/general/openai_model';
     public const XML_PATH_COMPONENT_REGISTRY = 'ai_cms_builder/component_registry/registry_json';
+    public const XML_PATH_CUSTOM_POLYFILLS_SCRIPT = 'ai_cms_builder/editor_customization/custom_polyfills_script';
+    public const XML_PATH_CUSTOM_MAIN_SCRIPT = 'ai_cms_builder/editor_customization/custom_main_script';
+
+    private const DEFAULT_POLYFILLS_SCRIPT = 'Graycore_CmsAiBuilder/js/admin-preview/polyfills-TKYBXB7G.js';
+    private const DEFAULT_MAIN_SCRIPT = 'Graycore_CmsAiBuilder/js/admin-preview/main-IMWL6HOY.js';
 
     /**
      * @param Context $context
@@ -108,5 +113,39 @@ class Config extends AbstractHelper
     {
         $registry = $this->getComponentRegistry($storeId);
         return json_encode($registry, JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Get custom polyfills script path or default
+     *
+     * @param int|null $storeId
+     * @return string
+     */
+    public function getPolyfillsScriptPath(?int $storeId = null): string
+    {
+        $customPath = $this->scopeConfig->getValue(
+            self::XML_PATH_CUSTOM_POLYFILLS_SCRIPT,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+
+        return $customPath ?: self::DEFAULT_POLYFILLS_SCRIPT;
+    }
+
+    /**
+     * Get custom main script path or default
+     *
+     * @param int|null $storeId
+     * @return string
+     */
+    public function getMainScriptPath(?int $storeId = null): string
+    {
+        $customPath = $this->scopeConfig->getValue(
+            self::XML_PATH_CUSTOM_MAIN_SCRIPT,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+
+        return $customPath ?: self::DEFAULT_MAIN_SCRIPT;
     }
 }

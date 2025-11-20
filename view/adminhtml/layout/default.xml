@@ -3,7 +3,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="js">
-            <block class="Magento\Backend\Block\Template"
+            <block class="Graycore\CmsAiBuilder\Block\Adminhtml\JsConfig"
                    template="Graycore_CmsAiBuilder::js_config.phtml"
                    name="ai_cms_builder_js_config"/>
         </referenceContainer>

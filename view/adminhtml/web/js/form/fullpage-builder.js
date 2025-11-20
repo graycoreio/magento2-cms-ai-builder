@@ -187,17 +187,24 @@ define([
          */
         loadAngularScripts: function () {
             var self = this;
+            var config = window.CmsAiBuilderConfig || {};
+
+            // Get script paths from config or use defaults
+            var polyfillsPath = config.polyfillsScript ||
+                'Graycore_CmsAiBuilder/js/admin-preview/polyfills-TKYBXB7G.js';
+            var mainScriptPath = config.mainScript ||
+                'Graycore_CmsAiBuilder/js/admin-preview/main-IMWL6HOY.js';
 
             // Load polyfills first
             var polyfillsScript = document.createElement('script');
             polyfillsScript.type = 'module';
-            polyfillsScript.src = require.toUrl('Graycore_CmsAiBuilder/js/admin-preview/polyfills-TKYBXB7G.js');
+            polyfillsScript.src = require.toUrl(polyfillsPath);
 
             polyfillsScript.onload = function () {
                 // Load main script after polyfills
                 var mainScript = document.createElement('script');
                 mainScript.type = 'module';
-                mainScript.src = require.toUrl('Graycore_CmsAiBuilder/js/admin-preview/main-IMWL6HOY.js');
+                mainScript.src = require.toUrl(mainScriptPath);
 
                 mainScript.onload = function () {
                     console.log('Angular app loaded successfully');

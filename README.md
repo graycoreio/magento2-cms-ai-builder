@@ -32,6 +32,27 @@ composer require graycore/magento2-cms-ai-builder
 bin/magento module:enable Graycore_CmsAiBuilder
 ```
 
+## Customizing the Editor
+
+You can replace the default Angular editor with your own implementation by configuring custom script paths in your module's `etc/config.xml`:
+
+```xml
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ai_cms_builder>
+            <editor_customization>
+                <custom_polyfills_script>Vendor_Module/js/custom-editor/polyfills.js</custom_polyfills_script>
+                <custom_main_script>Vendor_Module/js/custom-editor/main.js</custom_main_script>
+            </editor_customization>
+        </ai_cms_builder>
+    </default>
+</config>
+```
+
+These scripts should be built as an Angular app following the documentation from the `@daffodil/content` admin editor guide.
+
 ## License
 
 See [LICENSE](./LICENSE)

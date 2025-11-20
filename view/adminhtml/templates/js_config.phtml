@@ -6,6 +6,10 @@
 <script>
 window.CmsAiBuilderUrl = '<?= $escaper->escapeUrl($block->getUrl('CmsAiBuilder/generate/index')) ?>';
 window.CmsAiBuilderAssetsPath = '<?= $escaper->escapeUrl($block->getViewFileUrl('Graycore_CmsAiBuilder::js/admin-preview')) ?>';
+window.CmsAiBuilderConfig = {
+    polyfillsScript: '<?= $escaper->escapeJs($block->getPolyfillsScriptPath()) ?>',
+    mainScript: '<?= $escaper->escapeJs($block->getMainScriptPath()) ?>'
+};
 
 // Configure Monaco environment for web workers
 window.MonacoEnvironment = {
