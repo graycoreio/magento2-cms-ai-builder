@@ -1,19 +1,5 @@
 # Copyright © Graycore. All rights reserved.
 
 type CmsPage {
-    ai_prompt: String @doc(description: "The AI prompt used to generate the schema")
-    ai_schema_json: String @doc(description: "The AI-generated schema in JSON format for rendering dynamic content")
-    ai_schema: AiSchema @doc(description: "The AI-generated schema as a structured object") @resolver(class: "Graycore\\CmsAiBuilder\\Model\\Resolver\\AiSchema")
-}
-
-type AiSchema @doc(description: "AI-generated schema structure") {
-    component: String @doc(description: "The component name to render")
-    props: AiSchemaProps @doc(description: "Component properties")
-    children: [AiSchema] @doc(description: "Child components")
-}
-
-type AiSchemaProps @doc(description: "Dynamic properties for AI schema components") {
-    # This is a flexible container - actual props depend on the component
-    # The frontend will handle the dynamic nature of these props
-    data: String @doc(description: "Serialized JSON data of all props")
+    content_schema_json: String @doc(description: "The AI-generated schema in JSON format for rendering dynamic content") @resolver(class: "Graycore\\CmsAiBuilder\\Model\\Resolver\\ContentSchema")
 }
