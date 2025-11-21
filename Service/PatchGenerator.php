@@ -40,10 +40,14 @@ class PatchGenerator
      * @return GenerateSchemaResult
      * @throws \Exception
      */
-    public function generateSchema(string $prompt, string $schema, ?array $conversationHistory = null, ?int $storeId = null): GenerateSchemaResult
+    public function generateSchema(string $prompt, string | null $schema, ?array $conversationHistory = null, ?int $storeId = null): GenerateSchemaResult
     {
         $componentRegistry = $this->config->getComponentRegistryForPrompt($storeId);
         $systemPrompt = $this->prompt->getSystemPrompt($componentRegistry);
+
+        if(!$schema || $schema === '[]') {
+            $schema = '{}';
+        }
 
         // Build messages array with conversation history
         $messages = [
@@ -88,8 +92,7 @@ class PatchGenerator
             }
 
             // Apply JSON Patch to current schema
-            $currentSchemaObj = $this->json->unserialize($schema);
-            $patchedSchema = $this->patchApplier->applyPatch($currentSchemaObj, $patchResponse['patch']);
+            $patchedSchema = $this->patchApplier->applyPatch($schema, $patchResponse['patch']);
 
             // Build the ViewSchema response (with patched schema)
             $viewSchema = [
@@ -103,7 +106,7 @@ class PatchGenerator
             $updatedHistory[] = [
                 'type' => 'user',
                 'message' => $prompt,
-                'schema' => $currentSchemaObj,
+                'schema' => $this->json->unserialize($schema),
             ];
             $updatedHistory[] = [
                 'type' => 'system',
