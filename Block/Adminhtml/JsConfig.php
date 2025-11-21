@@ -30,7 +30,7 @@ class JsConfig extends Template
      *
      * @return string
      */
-    public function getPolyfillsScriptPath(): string
+    public function getPolyfillsScriptPath(): string | null
     {
         return $this->config->getPolyfillsScriptPath();
     }
