@@ -191,8 +191,7 @@ define([
 
             // Get script paths from config or use defaults
             var polyfillsPath = config.polyfillsScript;
-            var mainScriptPath = config.mainScript ||
-                'Graycore_CmsAiBuilder/js/admin-preview/browser/main-2BY7GEMS.js';
+            var mainScriptPath = config.mainScript;
 
             var loadMainScript = function () {
                 // Load main script
