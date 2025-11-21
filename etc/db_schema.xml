@@ -2,7 +2,7 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="cms_page_ai" resource="default" engine="innodb" comment="CMS Page AI Builder Data">
-        <column xsi:type="int" name="page_id" unsigned="false" nullable="false" comment="CMS Page ID"/>
+        <column xsi:type="smallint" name="page_id" unsigned="false" nullable="false" comment="CMS Page ID"/>
         <column xsi:type="text" name="ai_prompt" nullable="true" comment="AI Builder Prompt"/>
         <column xsi:type="longtext" name="ai_schema_json" nullable="true" comment="AI Generated Schema JSON"/>
         <column xsi:type="longtext" name="ai_conversation_history" nullable="true" comment="AI Conversation History JSON"/>
