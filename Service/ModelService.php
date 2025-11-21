@@ -7,19 +7,21 @@ declare(strict_types=1);
 namespace Graycore\CmsAiBuilder\Service;
 
 use Graycore\CmsAiBuilder\Helper\Config;
+use Graycore\CmsAiBuilder\Service\Schema\JsonPatchResponseSchema;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Serialize\Serializer\Json;
 use Psr\Log\LoggerInterface;
 
 class ModelService
 {
-    private const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+    private const OPENAI_API_URL = 'https://api.openai.com/v1/responses';
 
     public function __construct(
         private readonly Config $config,
         private readonly Curl $curl,
         private readonly Json $json,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly JsonPatchResponseSchema $responseSchema
     ) {
     }
 
@@ -44,8 +46,10 @@ class ModelService
 
         $payload = [
             'model' => 'gpt-5-nano',
-            'messages' => $messages,
-            'response_format' => ['type' => 'json_object']
+            'input' => $messages,
+            'text' => [
+                'format' => $this->responseSchema->getSchema()
+            ]
         ];
 
         try {
@@ -60,12 +64,15 @@ class ModelService
                 throw new \Exception('OpenAI API error: ' . $responseData['error']['message']);
             }
 
-            if (!isset($responseData['choices'][0]['message']['content'])) {
+            // The /v1/responses endpoint returns structured data directly in 'text'
+            if (!isset($responseData['text'])) {
                 throw new \Exception('Invalid response from OpenAI API');
             }
 
-            $content = $responseData['choices'][0]['message']['content'];
-            return $this->json->unserialize($content);
+            // With structured outputs, the response is already parsed JSON
+            return is_array($responseData['text'])
+                ? $responseData['text']
+                : $this->json->unserialize($responseData['text']);
 
         } catch (\Exception $e) {
             $this->logger->error('Failed to call model: ' . $e->getMessage());
