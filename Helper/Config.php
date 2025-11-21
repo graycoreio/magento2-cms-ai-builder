@@ -20,8 +20,6 @@ class Config extends AbstractHelper
     public const XML_PATH_CUSTOM_POLYFILLS_SCRIPT = 'ai_cms_builder/editor_customization/custom_polyfills_script';
     public const XML_PATH_CUSTOM_MAIN_SCRIPT = 'ai_cms_builder/editor_customization/custom_main_script';
 
-    private const DEFAULT_MAIN_SCRIPT = 'Graycore_CmsAiBuilder/js/admin-preview/browser/main-2BY7GEMS.js';
-
     /**
      * @param Context $context
      * @param EncryptorInterface $encryptor
@@ -120,7 +118,7 @@ class Config extends AbstractHelper
      * @param int|null $storeId
      * @return string
      */
-    public function getPolyfillsScriptPath(?int $storeId = null): string | null
+    public function getPolyfillsScriptPath(?int $storeId = null): string
     {
         $customPath = $this->scopeConfig->getValue(
             self::XML_PATH_CUSTOM_POLYFILLS_SCRIPT,
@@ -145,6 +143,6 @@ class Config extends AbstractHelper
             $storeId
         );
 
-        return $customPath ?: self::DEFAULT_MAIN_SCRIPT;
+        return $customPath;
     }
 }
