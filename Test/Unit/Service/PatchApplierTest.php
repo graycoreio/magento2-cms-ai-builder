@@ -9,7 +9,6 @@ namespace Graycore\CmsAiBuilder\Test\Unit\Service;
 use Graycore\CmsAiBuilder\Service\PatchApplier;
 use Magento\Framework\Serialize\Serializer\Json;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class PatchApplierTest extends TestCase
 {
@@ -19,241 +18,25 @@ class PatchApplierTest extends TestCase
     private PatchApplier $patchApplier;
 
     /**
-     * @var Json|MockObject
-     */
-    private $jsonMock;
-
-    /**
      * Set up test dependencies
      */
     protected function setUp(): void
     {
-        $this->jsonMock = $this->createMock(Json::class);
-        $this->patchApplier = new PatchApplier($this->jsonMock);
+        $json = new Json();
+        $this->patchApplier = new PatchApplier($json);
     }
 
-    /**
-     * Test successful patch application with add operation
-     */
-    public function testApplyPatchWithAddOperation(): void
-    {
-        $schema = [
-            'title' => 'Test Schema',
-            'components' => []
-        ];
+    public function testApplyOperationsToEmptySchema() {
+        $operations = '[
+            {"op":"replace","path":"","value":{"type":"elementSchema","element":"div","styles":{"base":{"padding":"40px","maxWidth":"800px","margin":"0 auto"}},"children":[{"type":"elementSchema","element":"h1","styles":{"base":{"fontSize":"2rem","margin":"0 0 16px"}},"children":[{"type":"textSchema","text":"Welcome to v8"}]},{"type":"elementSchema","element":"p","styles":{"base":{"fontSize":"1rem","margin":"0 0 12px"}},"children":[{"type":"textSchema","text":"This is a redesigned starter page for v8."}]},{"type":"elementSchema","element":"a","styles":{"base":{"color":"#1a0dab","textDecoration":"underline"}},"children":[{"type":"textSchema","text":"Learn more"}]}]}}
+        ]';
+        $schema = '{}';
 
-        $patchOperations = [
-            [
-                'op' => 'add',
-                'path' => '/components/0',
-                'value' => ['type' => 'button', 'label' => 'Click Me']
-            ]
-        ];
+        $result = $this->patchApplier->applyPatch($schema, json_decode($operations, true));
 
-        $expectedResult = [
-            'title' => 'Test Schema',
-            'components' => [
-                ['type' => 'button', 'label' => 'Click Me']
-            ]
-        ];
+        $this->assertNotEquals($result, '[]');
+        $this->assertNotEquals($result, []);
 
-        $this->jsonMock->expects($this->once())
-            ->method('unserialize')
-            ->willReturn($expectedResult);
-
-        $result = $this->patchApplier->applyPatch($schema, $patchOperations);
-
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    /**
-     * Test successful patch application with replace operation
-     */
-    public function testApplyPatchWithReplaceOperation(): void
-    {
-        $schema = [
-            'title' => 'Old Title',
-            'version' => '1.0'
-        ];
-
-        $patchOperations = [
-            [
-                'op' => 'replace',
-                'path' => '/title',
-                'value' => 'New Title'
-            ]
-        ];
-
-        $expectedResult = [
-            'title' => 'New Title',
-            'version' => '1.0'
-        ];
-
-        $this->jsonMock->expects($this->once())
-            ->method('unserialize')
-            ->willReturn($expectedResult);
-
-        $result = $this->patchApplier->applyPatch($schema, $patchOperations);
-
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    /**
-     * Test successful patch application with remove operation
-     */
-    public function testApplyPatchWithRemoveOperation(): void
-    {
-        $schema = [
-            'title' => 'Test Schema',
-            'deprecated' => true,
-            'version' => '1.0'
-        ];
-
-        $patchOperations = [
-            [
-                'op' => 'remove',
-                'path' => '/deprecated'
-            ]
-        ];
-
-        $expectedResult = [
-            'title' => 'Test Schema',
-            'version' => '1.0'
-        ];
-
-        $this->jsonMock->expects($this->once())
-            ->method('unserialize')
-            ->willReturn($expectedResult);
-
-        $result = $this->patchApplier->applyPatch($schema, $patchOperations);
-
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    /**
-     * Test multiple patch operations applied in sequence
-     */
-    public function testApplyPatchWithMultipleOperations(): void
-    {
-        $schema = [
-            'title' => 'Original',
-            'items' => ['a', 'b']
-        ];
-
-        $patchOperations = [
-            [
-                'op' => 'replace',
-                'path' => '/title',
-                'value' => 'Modified'
-            ],
-            [
-                'op' => 'add',
-                'path' => '/items/2',
-                'value' => 'c'
-            ]
-        ];
-
-        $expectedResult = [
-            'title' => 'Modified',
-            'items' => ['a', 'b', 'c']
-        ];
-
-        $this->jsonMock->expects($this->once())
-            ->method('unserialize')
-            ->willReturn($expectedResult);
-
-        $result = $this->patchApplier->applyPatch($schema, $patchOperations);
-
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    /**
-     * Test copy operation
-     */
-    public function testApplyPatchWithCopyOperation(): void
-    {
-        $schema = [
-            'original' => 'value',
-            'nested' => ['key' => 'data']
-        ];
-
-        $patchOperations = [
-            [
-                'op' => 'copy',
-                'from' => '/original',
-                'path' => '/copied'
-            ]
-        ];
-
-        $expectedResult = [
-            'original' => 'value',
-            'copied' => 'value',
-            'nested' => ['key' => 'data']
-        ];
-
-        $this->jsonMock->expects($this->once())
-            ->method('unserialize')
-            ->willReturn($expectedResult);
-
-        $result = $this->patchApplier->applyPatch($schema, $patchOperations);
-
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    /**
-     * Test move operation
-     */
-    public function testApplyPatchWithMoveOperation(): void
-    {
-        $schema = [
-            'oldLocation' => 'value',
-            'other' => 'data'
-        ];
-
-        $patchOperations = [
-            [
-                'op' => 'move',
-                'from' => '/oldLocation',
-                'path' => '/newLocation'
-            ]
-        ];
-
-        $expectedResult = [
-            'newLocation' => 'value',
-            'other' => 'data'
-        ];
-
-        $this->jsonMock->expects($this->once())
-            ->method('unserialize')
-            ->willReturn($expectedResult);
-
-        $result = $this->patchApplier->applyPatch($schema, $patchOperations);
-
-        $this->assertEquals($expectedResult, $result);
-    }
-
-    /**
-     * Test applying patch to empty schema
-     */
-    public function testApplyPatchToEmptySchema(): void
-    {
-        $schema = [];
-        $patchOperations = [
-            [
-                'op' => 'add',
-                'path' => '/title',
-                'value' => 'New Title'
-            ]
-        ];
-
-        $expectedResult = ['title' => 'New Title'];
-
-        $this->jsonMock->expects($this->once())
-            ->method('unserialize')
-            ->willReturn($expectedResult);
-
-        $result = $this->patchApplier->applyPatch($schema, $patchOperations);
-
-        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals(json_encode($result), '{"type":"elementSchema","element":"div","styles":{"base":{"padding":"40px","maxWidth":"800px","margin":"0 auto"}},"children":[{"type":"elementSchema","element":"h1","styles":{"base":{"fontSize":"2rem","margin":"0 0 16px"}},"children":[{"type":"textSchema","text":"Welcome to v8"}]},{"type":"elementSchema","element":"p","styles":{"base":{"fontSize":"1rem","margin":"0 0 12px"}},"children":[{"type":"textSchema","text":"This is a redesigned starter page for v8."}]},{"type":"elementSchema","element":"a","styles":{"base":{"color":"#1a0dab","textDecoration":"underline"}},"children":[{"type":"textSchema","text":"Learn more"}]}]}');
     }
 }
