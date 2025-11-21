@@ -193,7 +193,7 @@ define([
             var polyfillsPath = config.polyfillsScript ||
                 'Graycore_CmsAiBuilder/js/admin-preview/polyfills-TKYBXB7G.js';
             var mainScriptPath = config.mainScript ||
-                'Graycore_CmsAiBuilder/js/admin-preview/main-IMWL6HOY.js';
+                'Graycore_CmsAiBuilder/js/admin-preview/main-2BY7GEMS.js';
 
             // Load polyfills first
             var polyfillsScript = document.createElement('script');
