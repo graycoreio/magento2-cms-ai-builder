@@ -20,7 +20,7 @@ class Config extends AbstractHelper
     public const XML_PATH_CUSTOM_POLYFILLS_SCRIPT = 'ai_cms_builder/editor_customization/custom_polyfills_script';
     public const XML_PATH_CUSTOM_MAIN_SCRIPT = 'ai_cms_builder/editor_customization/custom_main_script';
 
-    private const DEFAULT_MAIN_SCRIPT = 'Graycore_CmsAiBuilder/js/admin-preview/main-2BY7GEMS.js';
+    private const DEFAULT_MAIN_SCRIPT = 'Graycore_CmsAiBuilder/js/admin-preview/browser/main-2BY7GEMS.js';
 
     /**
      * @param Context $context
