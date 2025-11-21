@@ -190,18 +190,12 @@ define([
             var config = window.CmsAiBuilderConfig || {};
 
             // Get script paths from config or use defaults
-            var polyfillsPath = config.polyfillsScript ||
-                'Graycore_CmsAiBuilder/js/admin-preview/polyfills-TKYBXB7G.js';
+            var polyfillsPath = config.polyfillsScript;
             var mainScriptPath = config.mainScript ||
-                'Graycore_CmsAiBuilder/js/admin-preview/main-2BY7GEMS.js';
+                'Graycore_CmsAiBuilder/js/admin-preview/browser/main-2BY7GEMS.js';
 
-            // Load polyfills first
-            var polyfillsScript = document.createElement('script');
-            polyfillsScript.type = 'module';
-            polyfillsScript.src = require.toUrl(polyfillsPath);
-
-            polyfillsScript.onload = function () {
-                // Load main script after polyfills
+            var loadMainScript = function () {
+                // Load main script
                 var mainScript = document.createElement('script');
                 mainScript.type = 'module';
                 mainScript.src = require.toUrl(mainScriptPath);
@@ -217,11 +211,25 @@ define([
                 document.head.appendChild(mainScript);
             };
 
-            polyfillsScript.onerror = function () {
-                console.error('Failed to load Angular polyfills');
-            };
+            // Load polyfills first only if configured
+            if (polyfillsPath) {
+                var polyfillsScript = document.createElement('script');
+                polyfillsScript.type = 'module';
+                polyfillsScript.src = require.toUrl(polyfillsPath);
 
-            document.head.appendChild(polyfillsScript);
+                polyfillsScript.onload = function () {
+                    loadMainScript();
+                };
+
+                polyfillsScript.onerror = function () {
+                    console.error('Failed to load Angular polyfills');
+                };
+
+                document.head.appendChild(polyfillsScript);
+            } else {
+                // Skip polyfills and load main script directly
+                loadMainScript();
+            }
         }
     });
 });
