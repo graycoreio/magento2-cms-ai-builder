@@ -11,12 +11,6 @@
             <directory>Test/Unit</directory>
         </testsuite>
     </testsuites>
-    <coverage includeUncoveredFiles="true">
-        <report>
-            <html outputDirectory="build/coverage"/>
-            <text outputFile="php://stdout" showOnlySummary="true"/>
-        </report>
-    </coverage>
     <source>
         <include>
             <directory suffix=".php">.</directory>
