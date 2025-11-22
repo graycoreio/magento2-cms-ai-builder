@@ -136,12 +136,6 @@ define([
                 type: 'POST',
                 dataType: 'json',
                 data: requestData,
-                beforeSend: function () {
-                    // Notify Angular component that generation started
-                    if (self.editor && self.editor.onGenerationStart) {
-                        self.editor.onGenerationStart();
-                    }
-                }
             }).done(function (response) {
                 if (response.success && response.schema) {
                     // Update conversation history in form (important for unsaved pages)
@@ -164,20 +158,15 @@ define([
                 } else {
                     console.error('API error:', response.error || 'Unknown error');
                     // Notify Angular component of error
-                    if (self.editor && self.editor.onGenerationError) {
-                        self.editor.onGenerationError(response.error || 'Unknown error');
+                    if (self.editor) {
+                        self.editor.error = response.error || 'Unknown error';
                     }
                 }
             }).fail(function (xhr) {
                 console.error('API request failed:', xhr);
                 // Notify Angular component of error
-                if (self.editor && self.editor.onGenerationError) {
-                    self.editor.onGenerationError('Failed to connect to API');
-                }
-            }).always(function () {
-                // Notify Angular component that generation completed
-                if (self.editor && self.editor.onGenerationComplete) {
-                    self.editor.onGenerationComplete();
+                if (self.editor) {
+                    self.editor.error = 'Failed to connect to API';
                 }
             });
         },
