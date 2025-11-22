@@ -50,7 +50,7 @@ class Index extends Action implements HttpPostActionInterface
             $prompt = $request->getParam('prompt');
             $schema = $request->getParam('schema');
             $pageId = $request->getParam('page_id');
-            $conversationHistoryJson = $request->getParam('conversation_history');
+            $clientConversationHistory = $request->getParam('conversation_history');
 
             if (!$prompt || empty(trim($prompt))) {
                 return $resultJson->setData([
@@ -59,7 +59,7 @@ class Index extends Action implements HttpPostActionInterface
                 ]);
             }
 
-            $conversationHistory = null;
+            $storedConversationHistory = null;
 
             // If page exists, load conversation history from database
             if ($pageId) {
@@ -68,10 +68,10 @@ class Index extends Action implements HttpPostActionInterface
                     $storedHistoryJson = $page->getData('ai_conversation_history');
                     if ($storedHistoryJson) {
                         try {
-                            $conversationHistory = $this->json->unserialize($storedHistoryJson);
+                            $storedConversationHistory = $this->json->unserialize($storedHistoryJson);
                         } catch (\Exception $e) {
                             // Invalid JSON, start fresh
-                            $conversationHistory = null;
+                            $storedConversationHistory = null;
                         }
                     }
                 } catch (\Exception $e) {
@@ -81,17 +81,17 @@ class Index extends Action implements HttpPostActionInterface
             }
 
             // If no page or no stored history, use conversation history from request
-            if ($conversationHistory === null && $conversationHistoryJson) {
+            if ($storedConversationHistory === null && $clientConversationHistory) {
                 try {
-                    $conversationHistory = $this->json->unserialize($conversationHistoryJson);
+                    $storedConversationHistory = $this->json->unserialize($clientConversationHistory);
                 } catch (\Exception $e) {
                     // Invalid JSON, start fresh
-                    $conversationHistory = null;
+                    $storedConversationHistory = null;
                 }
             }
 
             // Generate schema with conversation history
-            $result = $this->patchGenerator->generateSchema($prompt, $schema, $conversationHistory);
+            $result = $this->patchGenerator->generateSchema($prompt, $schema, $storedConversationHistory);
 
             // Save conversation history to database if page exists
             if ($pageId && isset($page)) {
