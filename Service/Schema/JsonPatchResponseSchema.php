@@ -11,6 +11,88 @@ namespace Graycore\CmsAiBuilder\Service\Schema;
  */
 class JsonPatchResponseSchema
 {
+    public function __construct(
+        private readonly ComponentSchema $componentSchema
+    ) {
+    }
+    /**
+     * Get the schema definitions for DaffContentSchema types
+     *
+     * @return array
+     */
+    public function getDaffContentSchemaDefinitions(): array
+    {
+        return [
+            'DaffContentSchema' => [
+                'oneOf' => [
+                    ['$ref' => '#/$defs/DaffTextSchema'],
+                    ['$ref' => '#/$defs/DaffContentElementSchema'],
+                    ['$ref' => '#/$defs/DaffContentComponentSchema']
+                ]
+            ],
+            'DaffTextSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'type' => ['type' => 'string', 'const' => 'textSchema'],
+                    'text' => ['type' => 'string']
+                ],
+                'required' => ['type', 'text'],
+                'additionalProperties' => false
+            ],
+            'DaffContentElementSchema' => [
+                'type' => 'object',
+                'properties' => [
+                    'type' => ['type' => 'string', 'const' => 'elementSchema'],
+                    'element' => ['type' => 'string'],
+                    'attributes' => [
+                        'type' => 'object',
+                        'additionalProperties' => ['type' => 'string']
+                    ],
+                    'children' => [
+                        'type' => 'array',
+                        'items' => ['$ref' => '#/$defs/DaffContentSchema']
+                    ],
+                    'styles' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'base' => [
+                                'type' => 'object',
+                                'additionalProperties' => [
+                                    'oneOf' => [
+                                        ['type' => 'string'],
+                                        ['type' => 'number']
+                                    ]
+                                ]
+                            ],
+                            'breakpoints' => [
+                                'type' => 'object',
+                                'additionalProperties' => [
+                                    'type' => 'object',
+                                    'additionalProperties' => [
+                                        'oneOf' => [
+                                            ['type' => 'string'],
+                                            ['type' => 'number']
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'required' => [],
+                        'additionalProperties' => false
+                    ]
+                ],
+                'required' => ['type', 'element'],
+                'additionalProperties' => false
+            ],
+            'DaffContentComponentSchema' => [
+                'oneOf' => array_map(
+                    fn($schemaName) => ['$ref' => "#/\$defs/{$schemaName}"],
+                    array_keys($this->componentSchema->getSchemas())
+                )
+            ]
+        ] + $this->componentSchema->getSchemas();
+    }
+
     /**
      * Get the JSON schema for structured outputs (RFC 6902 JSON Patch)
      *
@@ -23,6 +105,20 @@ class JsonPatchResponseSchema
             'name' => 'json_patch_response',
             'schema' => [
                 'type' => 'object',
+                '$defs' => array_merge(
+                    $this->getDaffContentSchemaDefinitions(),
+                    [
+                        'JsonValue' => [
+                            'oneOf' => [
+                                ['type' => 'string'],
+                                ['type' => 'number'],
+                                ['type' => 'boolean'],
+                                ['type' => 'null'],
+                                ['$ref' => '#/$defs/DaffContentSchema']
+                            ]
+                        ]
+                    ]
+                ),
                 'properties' => [
                     'reply' => [
                         'type' => 'string',
@@ -44,22 +140,21 @@ class JsonPatchResponseSchema
                                     'description' => 'JSON Pointer to the target location'
                                 ],
                                 'value' => [
-                                    'description' => 'The value to add, replace, or test (required for add, replace, test operations)'
+                                    '$ref' => '#/$defs/JsonValue'
                                 ],
                                 'from' => [
                                     'type' => 'string',
-                                    'description' => 'JSON Pointer to source location (required for move and copy operations)'
+                                    'description' => 'JSON Pointer to source location (required for move and copy operations, empty string for others)'
                                 ]
                             ],
-                            'required' => ['op', 'path'],
+                            'required' => ['op', 'path', 'value', 'from'],
                             'additionalProperties' => false
                         ]
                     ]
                 ],
                 'required' => ['reply', 'patch'],
                 'additionalProperties' => false
-            ],
-            'strict' => true
+            ]
         ];
     }
 }
