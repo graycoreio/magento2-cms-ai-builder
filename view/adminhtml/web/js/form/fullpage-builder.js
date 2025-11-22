@@ -140,6 +140,7 @@ define([
                     // Notify Angular component that generation started
                     if (self.editor) {
                         self.editor.error = null;
+                        self.editor.isGenerating = true;
                     }
                 }
             }).done(function (response) {
@@ -168,11 +169,13 @@ define([
                         self.editor.error = response.error || 'Unknown error';
                     }
                 }
+                self.editor.isGenerating = false;
             }).fail(function (xhr) {
                 console.error('API request failed:', xhr);
                 // Notify Angular component of error
                 if (self.editor) {
                     self.editor.error = 'Failed to connect to API';
+                    self.editor.isGenerating = false;
                 }
             });
         },
