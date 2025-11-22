@@ -49,10 +49,9 @@ RULES FOR LARGE REDESIGNS:
 3. Use creativity and best practices for layout and component composition
 
 GENERAL RULES:
-1. Generate a valid JSON object that follows the structure expected by the schema-renderer
-2. Only use components from the provided registry
-3. Ensure all required props for each component are included
-4. Use semantic and meaningful content based on the user's prompt
+1. Only use components from the provided registry
+2. Ensure all required props for each component are included
+3. Use semantic and meaningful content based on the user's prompt
 
 Return ONLY valid JSON, no markdown or additional text
 
