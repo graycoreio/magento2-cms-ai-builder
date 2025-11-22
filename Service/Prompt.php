@@ -114,7 +114,7 @@ CRITICAL: You MUST return JSON Patch operations, NOT the full schema. The backen
 ```json
 {
   "type": "elementSchema",
-  "element": "div",  // Must be: div, span, h1-h6, p, ul, ol, li, a
+  "element": "div",  // Must be: div, span, h1-h6, p, ul, ol, li
   "styles": { "base": {...}, "breakpoints": {...} },  // optional
   "children": [...]  // optional
 }
