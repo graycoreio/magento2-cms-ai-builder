@@ -66,15 +66,18 @@ class JsonPatchResponseSchema
                             ],
                             'breakpoints' => [
                                 'type' => 'object',
-                                'additionalProperties' => [
-                                    'type' => 'object',
-                                    'additionalProperties' => [
-                                        'anyOf' => [
-                                            ['type' => 'string'],
-                                            ['type' => 'number']
+                                'patternProperties' => [
+                                    '^[^@]+$' => [
+                                        'type' => 'object',
+                                        'additionalProperties' => [
+                                            'anyOf' => [
+                                                ['type' => 'string'],
+                                                ['type' => 'number']
+                                            ]
                                         ]
                                     ]
-                                ]
+                                ],
+                                'additionalProperties' => false
                             ]
                         ],
                         'required' => [],
