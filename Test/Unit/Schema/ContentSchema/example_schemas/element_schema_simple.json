@@ -1,4 +1,6 @@
 {
   "type": "elementSchema",
-  "element": "div"
+  "element": "div",
+  "children": [],
+  "styles": {}
 }

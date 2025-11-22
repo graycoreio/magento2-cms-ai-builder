@@ -12,7 +12,8 @@
             "type": "textSchema",
             "text": "New paragraph content"
           }
-        ]
+        ],
+        "styles": {}
       },
       "from": ""
     }

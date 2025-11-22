@@ -21,7 +21,8 @@
                 "type": "textSchema",
                 "text": "Welcome to our site"
               }
-            ]
+            ],
+            "styles": {}
           }
         ]
       },

@@ -83,16 +83,12 @@ class LlmModelResponseSchemaTest extends TestCase
         $this->validator->validate($responseObject, $this->schema->getSchema()['schema']);
 
         if ($this->validator->isValid()) {
-            // Reset validator for next test
+            $this->validator->reset();
             $this->assertTrue(true);
-            $this->validator->reset();
         } else {
-            foreach ($this->validator->getErrors() as $error) {
-                echo sprintf("  - [%s] %s\n", $error['property'], $error['message']);
-            }
-            // Reset validator for next test
+            $errors = json_encode($this->validator->getErrors(), JSON_PRETTY_PRINT);
             $this->validator->reset();
-            $this->fail("Content schema validation failed for: {$name}");
+            $this->fail("Content schema validation failed for: {$name}. Errors: $errors");
         }
 
     }

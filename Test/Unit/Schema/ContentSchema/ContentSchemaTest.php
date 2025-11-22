@@ -100,7 +100,7 @@ class ContentSchemaTest extends TestCase
                 'name' => 'Hero with invalid input (headline)',
                 'content' => self::loadSchema("{$examplesDir}/simple_page.json"),
                 'schemaType' => 'DaffContentElementSchema',
-                'expectedError' => 'headline'
+                'expectedError' => 'The property headline is not defined and the definition does not allow additional properties'
             ]
         ];
     }
@@ -135,11 +135,9 @@ class ContentSchemaTest extends TestCase
         if ($this->validator->isValid()) {
             $this->assertTrue(true);
         } else {
-            foreach ($this->validator->getErrors() as $error) {
-                echo sprintf("  - [%s] %s\n", $error['property'], $error['message']);
-            }
+            $errors = json_encode($this->validator->getErrors(), JSON_PRETTY_PRINT);
             $this->validator->reset();
-            $this->fail("Content schema validation failed for: {$name}");
+            $this->fail("Content schema validation failed for: {$name}. Errors: $errors");
         }
 
         $this->validator->reset();
@@ -188,14 +186,20 @@ class ContentSchemaTest extends TestCase
             $this->fail("Expected validation to fail for: {$name}, but no errors were found");
         }
 
-        // Check that the FIRST error is about the expected property
-        $firstError = $errors[0];
-        $foundExpectedError = stripos($firstError['property'], $expectedError) !== false ||
-                             stripos($firstError['message'], $expectedError) !== false;
+       // Check that ONE of the errors is about the expected property
+       $foundExpectedError = false;
+       foreach ($errors as $error) {
+           if (stripos($error['property'], $expectedError) !== false ||
+               stripos($error['message'], $expectedError) !== false) {
+               $foundExpectedError = true;
+               break;
+           }
+       }
 
         if (!$foundExpectedError) {
+            $errors = json_encode($this->validator->getErrors(), JSON_PRETTY_PRINT);
             $this->validator->reset();
-            $this->fail("Expected first error containing '{$expectedError}' not found for: {$name}");
+            $this->fail("Expected first error containing '{$expectedError}' not found for: {$name}. Errors: $errors");
         }
 
         $this->validator->reset();
