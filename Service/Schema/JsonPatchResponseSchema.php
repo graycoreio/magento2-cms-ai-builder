@@ -24,7 +24,7 @@ class JsonPatchResponseSchema
     {
         return [
             'DaffContentSchema' => [
-                'oneOf' => [
+                'anyOf' => [
                     ['$ref' => '#/$defs/DaffTextSchema'],
                     ['$ref' => '#/$defs/DaffContentElementSchema'],
                     ['$ref' => '#/$defs/DaffContentComponentSchema']
@@ -58,7 +58,7 @@ class JsonPatchResponseSchema
                             'base' => [
                                 'type' => 'object',
                                 'additionalProperties' => [
-                                    'oneOf' => [
+                                    'anyOf' => [
                                         ['type' => 'string'],
                                         ['type' => 'number']
                                     ]
@@ -69,7 +69,7 @@ class JsonPatchResponseSchema
                                 'additionalProperties' => [
                                     'type' => 'object',
                                     'additionalProperties' => [
-                                        'oneOf' => [
+                                        'anyOf' => [
                                             ['type' => 'string'],
                                             ['type' => 'number']
                                         ]
@@ -81,11 +81,11 @@ class JsonPatchResponseSchema
                         'additionalProperties' => false
                     ]
                 ],
-                'required' => ['type', 'element'],
+                'required' => ['type', 'element', 'children', 'styles'],
                 'additionalProperties' => false
             ],
             'DaffContentComponentSchema' => [
-                'oneOf' => array_map(
+                'anyOf' => array_map(
                     fn($schemaName) => ['$ref' => "#/\$defs/{$schemaName}"],
                     array_keys($this->componentSchema->getSchemas())
                 )
@@ -109,7 +109,7 @@ class JsonPatchResponseSchema
                     $this->getDaffContentSchemaDefinitions(),
                     [
                         'JsonValue' => [
-                            'oneOf' => [
+                            'anyOf' => [
                                 ['type' => 'string'],
                                 ['type' => 'number'],
                                 ['type' => 'boolean'],

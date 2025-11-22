@@ -65,14 +65,14 @@ class ModelService
             }
 
             // The /v1/responses endpoint returns structured data directly in 'text'
-            if (!isset($responseData['text'])) {
+            if (!isset($responseData['output'])) {
                 throw new \Exception('Invalid response from OpenAI API');
             }
 
+            $structuredResponse = $responseData['output'][1]['content'][0]['text'];
+
             // With structured outputs, the response is already parsed JSON
-            return is_array($responseData['text'])
-                ? $responseData['text']
-                : $this->json->unserialize($responseData['text']);
+            return $this->json->unserialize($structuredResponse);
 
         } catch (\Exception $e) {
             $this->logger->error('Failed to call model: ' . $e->getMessage());

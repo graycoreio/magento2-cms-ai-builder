@@ -53,7 +53,7 @@ class ComponentSchema
                             'description' => 'Background color palette'
                         ]
                     ],
-                    'required' => [],
+                    'required' => ['textAlignment', 'compact', 'color'],
                     'additionalProperties' => false
                 ],
                 'children' => [
