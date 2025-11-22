@@ -136,6 +136,12 @@ define([
                 type: 'POST',
                 dataType: 'json',
                 data: requestData,
+                beforeSend: function () {
+                    // Notify Angular component that generation started
+                    if (self.editor) {
+                        self.editor.error = null;
+                    }
+                }
             }).done(function (response) {
                 if (response.success && response.schema) {
                     // Update conversation history in form (important for unsaved pages)
