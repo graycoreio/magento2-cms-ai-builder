@@ -45,7 +45,7 @@ class ModelService
         }
 
         $payload = [
-            'model' => 'gpt-5.1',
+            'model' => 'gpt-5-mini',
             'input' => $messages,
             'text' => [
                 'format' => $this->responseSchema->getSchema()
@@ -67,6 +67,10 @@ class ModelService
             // The /v1/responses endpoint returns structured data directly in 'text'
             if (!isset($responseData['output'])) {
                 throw new \Exception('Invalid response from OpenAI API');
+            }
+
+            if (!isset($responseData['output'][1]['content'][0]['text'])) {
+                throw new \Exception('Invalid response structure from OpenAI API');
             }
 
             $structuredResponse = $responseData['output'][1]['content'][0]['text'];
