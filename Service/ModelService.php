@@ -45,7 +45,7 @@ class ModelService
         }
 
         $payload = [
-            'model' => 'gpt-5-mini',
+            'model' => $this->config->getOpenAiModel(),
             'input' => $messages,
             'text' => [
                 'format' => $this->responseSchema->getSchema()

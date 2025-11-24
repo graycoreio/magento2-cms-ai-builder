@@ -20,6 +20,11 @@
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <comment>Enter your OpenAI API key for schema generation</comment>
                 </field>
+                <field id="openai_model" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>OpenAI Model</label>
+                    <source_model>Graycore\CmsAiBuilder\Model\Config\Source\OpenAiModel</source_model>
+                    <comment>Select the OpenAI model to use for schema generation</comment>
+                </field>
             </group>
         </section>
     </system>
