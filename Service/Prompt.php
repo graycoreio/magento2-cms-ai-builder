@@ -115,10 +115,52 @@ CRITICAL: You MUST return JSON Patch operations, NOT the full schema. The backen
 {
   "type": "elementSchema",
   "element": "div",  // Must be: div, span, h1-h6, p, ul, ol, li
-  "styles": { "base": {...}, "breakpoints": {...} },  // optional
+  "styles": { "base": {...}, "breakpoints": {...} },  // optional - see Styles section below
   "children": [...]  // optional
 }
 ```
+
+**STYLES AND RESPONSIVE BREAKPOINTS:**
+
+The `styles` property uses CSS-in-JS syntax with support for responsive container queries:
+
+```json
+{
+  "styles": {
+    "base": {
+      "display": "grid",
+      "grid-template-columns": "1fr",
+      "color": "#333"
+    },
+    "breakpoints": {
+      "(min-width: 768px)": {
+        "grid-template-columns": "repeat(2, 1fr)"
+      },
+      "(min-width: 1200px)": {
+        "grid-template-columns": "repeat(3, 1fr)"
+      }
+    }
+  }
+}
+```
+
+**CRITICAL BREAKPOINT RULES:**
+
+1. **Breakpoints are for CSS @container queries** - The keys will be used as arguments to `@container`
+2. **Use container query conditions** - Valid examples:
+   - `(min-width: 768px)` ✓
+   - `(max-width: 1200px)` ✓
+   - `(width > 500px)` ✓
+   - `min-width: 768px` ✓ (parentheses optional)
+   - `(min-width: 768px) and (max-width: 1200px)` ✓
+
+3. **NEVER use these formats:**
+   - `@media (min-width: 768px)` ✗ - No @media prefix!
+   - `sm`, `md`, `lg`, `xl` ✗ - No shorthand names!
+
+4. **Style properties** - Use CSS properties:
+   - `background-color`, `font-size`, `margin-top`, `grid-template-columns`, etc.
+   - Values are strings (with units) or numbers
 
 **(B) componentSchema:**
 ```json
