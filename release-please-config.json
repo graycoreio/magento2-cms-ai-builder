@@ -1,0 +1,15 @@
+{
+  "bootstrap-sha": "7262a69c52ee65226fe9ab24416efd208279714c",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "draft-pull-request": true,
+  "prerelease": true,
+  "include-component-in-tag": false,
+  "include-v-in-tag": true,
+  "pull-request-title-pattern": "chore: release ${version}",
+  "packages": {
+    ".": {
+      "release-type": "php"
+    }
+  }
+}
