@@ -45,7 +45,7 @@ class ModelService
         }
 
         $payload = [
-            'model' => 'gpt-5-nano',
+            'model' => 'gpt-5.1',
             'input' => $messages,
             'text' => [
                 'format' => $this->responseSchema->getSchema()
