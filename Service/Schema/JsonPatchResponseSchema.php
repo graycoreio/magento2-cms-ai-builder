@@ -52,37 +52,7 @@ class JsonPatchResponseSchema
                         'type' => 'array',
                         'items' => ['$ref' => '#/$defs/DaffContentSchema']
                     ],
-                    'styles' => [
-                        'type' => 'object',
-                        'properties' => [
-                            'base' => [
-                                'type' => 'object',
-                                'additionalProperties' => [
-                                    'anyOf' => [
-                                        ['type' => 'string'],
-                                        ['type' => 'number']
-                                    ]
-                                ]
-                            ],
-                            'breakpoints' => [
-                                'type' => 'object',
-                                'patternProperties' => [
-                                    '^[^@]+$' => [
-                                        'type' => 'object',
-                                        'additionalProperties' => [
-                                            'anyOf' => [
-                                                ['type' => 'string'],
-                                                ['type' => 'number']
-                                            ]
-                                        ]
-                                    ]
-                                ],
-                                'additionalProperties' => false
-                            ]
-                        ],
-                        'required' => [],
-                        'additionalProperties' => false
-                    ]
+                    'styles' => ['$ref' => '#/$defs/StylesObject']
                 ],
                 'required' => ['type', 'element', 'children', 'styles'],
                 'additionalProperties' => false
@@ -111,13 +81,45 @@ class JsonPatchResponseSchema
                 '$defs' => array_merge(
                     $this->getDaffContentSchemaDefinitions(),
                     [
+                        'CssStyleObject' => [
+                            'type' => 'object',
+                            'description' => 'CSS styles as key-value pairs (e.g. {"margin": "10px", "display": "flex"}).',
+                            'properties' => (object)[],
+                            'required' => [],
+                            'additionalProperties' => [
+                                'anyOf' => [
+                                    ['type' => 'string'],
+                                    ['type' => 'number']
+                                ]
+                            ]
+                        ],
+                        'BreakpointsObject' => [
+                            'type' => 'object',
+                            'description' => 'Responsive styles keyed by media query condition.',
+                            'properties' => (object)[],
+                            'required' => [],
+                            'additionalProperties' => ['$ref' => '#/$defs/CssStyleObject']
+                        ],
+                        'StylesObject' => [
+                            'type' => 'object',
+                            'description' => 'Element styles with base and responsive breakpoints.',
+                            'properties' => [
+                                'base' => ['$ref' => '#/$defs/CssStyleObject'],
+                                'breakpoints' => ['$ref' => '#/$defs/BreakpointsObject']
+                            ],
+                            'required' => ['base', 'breakpoints'],
+                            'additionalProperties' => false
+                        ],
                         'JsonValue' => [
                             'anyOf' => [
                                 ['type' => 'string'],
                                 ['type' => 'number'],
                                 ['type' => 'boolean'],
                                 ['type' => 'null'],
-                                ['$ref' => '#/$defs/DaffContentSchema']
+                                ['$ref' => '#/$defs/DaffContentSchema'],
+                                ['$ref' => '#/$defs/StylesObject'],
+                                ['$ref' => '#/$defs/BreakpointsObject'],
+                                ['$ref' => '#/$defs/CssStyleObject']
                             ]
                         ]
                     ]
