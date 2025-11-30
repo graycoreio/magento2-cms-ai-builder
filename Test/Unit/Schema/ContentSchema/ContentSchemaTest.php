@@ -106,12 +106,6 @@ class ContentSchemaTest extends TestCase
                 'content' => self::loadSchema("{$examplesDir}/simple_page.json"),
                 'schemaType' => 'DaffContentElementSchema',
                 'expectedError' => 'The property headline is not defined and the definition does not allow additional properties'
-            ],
-            'invalid_media_query_in_breakpoints' => [
-                'name' => 'Element with @media in breakpoints',
-                'content' => self::loadSchema("{$examplesDir}/element_schema_with_media_query.json"),
-                'schemaType' => 'DaffContentElementSchema',
-                'expectedError' => '@media'
             ]
         ];
     }

@@ -26,17 +26,49 @@ class PatchApplierTest extends TestCase
         $this->patchApplier = new PatchApplier($json);
     }
 
-    public function testApplyOperationsToEmptySchema() {
-        $operations = '[
-            {"op":"replace","path":"","value":{"type":"elementSchema","element":"div","styles":{"base":{"padding":"40px","maxWidth":"800px","margin":"0 auto"}},"children":[{"type":"elementSchema","element":"h1","styles":{"base":{"fontSize":"2rem","margin":"0 0 16px"}},"children":[{"type":"textSchema","text":"Welcome to v8"}]},{"type":"elementSchema","element":"p","styles":{"base":{"fontSize":"1rem","margin":"0 0 12px"}},"children":[{"type":"textSchema","text":"This is a redesigned starter page for v8."}]},{"type":"elementSchema","element":"a","styles":{"base":{"color":"#1a0dab","textDecoration":"underline"}},"children":[{"type":"textSchema","text":"Learn more"}]}]}}
-        ]';
-        $schema = '{}';
+    /**
+     * Data provider for file-based patch tests
+     *
+     * @return array<string, array{string, string, string}>
+     */
+    public static function patchTestDataProvider(): array
+    {
+        $testCases = [];
+        $testDir = __DIR__;
 
-        $result = $this->patchApplier->applyPatch($schema, json_decode($operations, true));
+        $directories = glob($testDir . '/*_test', GLOB_ONLYDIR);
+        foreach ($directories as $dir) {
+            $inputFile = $dir . '/input.json';
+            $patchFile = $dir . '/patch.json';
+            $outputFile = $dir . '/output.json';
 
-        $this->assertNotEquals($result, '[]');
-        $this->assertNotEquals($result, []);
+            if (file_exists($inputFile) && file_exists($patchFile) && file_exists($outputFile)) {
+                $testName = basename($dir);
+                $testCases[$testName] = [
+                    file_get_contents($inputFile),
+                    file_get_contents($patchFile),
+                    file_get_contents($outputFile)
+                ];
+            }
+        }
 
-        $this->assertEquals(json_encode($result), '{"type":"elementSchema","element":"div","styles":{"base":{"padding":"40px","maxWidth":"800px","margin":"0 auto"}},"children":[{"type":"elementSchema","element":"h1","styles":{"base":{"fontSize":"2rem","margin":"0 0 16px"}},"children":[{"type":"textSchema","text":"Welcome to v8"}]},{"type":"elementSchema","element":"p","styles":{"base":{"fontSize":"1rem","margin":"0 0 12px"}},"children":[{"type":"textSchema","text":"This is a redesigned starter page for v8."}]},{"type":"elementSchema","element":"a","styles":{"base":{"color":"#1a0dab","textDecoration":"underline"}},"children":[{"type":"textSchema","text":"Learn more"}]}]}');
+        return $testCases;
+    }
+
+    /**
+     * @dataProvider patchTestDataProvider
+     */
+    public function testApplyPatchFromFiles(string $input, string $patch, string $expectedOutput): void
+    {
+        $patchData = json_decode($patch, true);
+        // Wrap single operation in array if needed
+        if (isset($patchData['op'])) {
+            $patchData = [$patchData];
+        }
+
+        $result = $this->patchApplier->applyPatch($input, $patchData);
+
+        $expected = json_decode($expectedOutput, true);
+        $this->assertEquals($expected, $result);
     }
 }
