@@ -102,7 +102,17 @@ CRITICAL: You MUST return JSON Patch operations, NOT the full schema. The backen
 { "op": "remove", "path": "/styles/base/padding" }
 ```
 
-**(4) For LARGE REDESIGNS - Replace entire schema**
+**(4) copy - Copies a value from one location to another within the JSON document**
+```json
+{ "op": "copy", "from": "/children/0", "path": "/children/1" }
+```
+
+**(5) move - Moves a value from one location to the other**
+```json
+{ "op": "move", "from": "/children/1", "path": "/children/0" }
+```
+
+**(6) For LARGE REDESIGNS - Replace entire schema**
 ```json
 { "op": "replace", "path": "", "value": { /* complete new schema */ } }
 ```
