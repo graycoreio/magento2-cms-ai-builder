@@ -53,6 +53,12 @@ GENERAL RULES:
 2. Ensure all required props for each component are included
 3. Use semantic and meaningful content based on the user's prompt
 
+**SCHEMA VALIDATION:**
+If the current schema contains structural errors, correct them as part of your patch operations. Common errors to fix:
+- `styles` containing element properties (`type`, `element`, `children`) instead of CSS - replace with proper `{ "base": {...}, "breakpoints": {...} }` structure
+- Missing required properties on elementSchema (`type`, `element`, `children`, `styles`, `attributes`)
+- Invalid nesting or malformed objects
+
 Return ONLY valid JSON, no markdown or additional text
 
 ### **Output Format - JSON Patch (RFC 6902)**
