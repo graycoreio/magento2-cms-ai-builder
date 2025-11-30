@@ -6,7 +6,8 @@
       "fontSize": "2rem",
       "color": "#333",
       "margin": "0 0 16px"
-    }
+    },
+    "breakpoints": {}
   },
   "children": [
     {

@@ -16,7 +16,10 @@
           "text": "Welcome"
         }
       ],
-      "styles": {}
+      "styles": {
+        "base": {},
+        "breakpoints": {}
+      }
     }
   ]
 }

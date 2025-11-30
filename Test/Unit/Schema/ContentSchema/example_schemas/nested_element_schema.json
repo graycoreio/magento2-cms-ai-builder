@@ -4,7 +4,8 @@
   "styles": {
     "base": {
       "padding": "20px"
-    }
+    },
+    "breakpoints": {}
   },
   "children": [
     {
@@ -20,7 +21,10 @@
               "text": "Section Title"
             }
           ],
-          "styles": {}
+          "styles": {
+            "base": {},
+            "breakpoints": {}
+          }
         },
         {
           "type": "elementSchema",
@@ -31,10 +35,16 @@
               "text": "Paragraph content with nested structure."
             }
           ],
-          "styles": {}
+          "styles": {
+            "base": {},
+            "breakpoints": {}
+          }
         }
       ],
-      "styles": {}
+      "styles": {
+        "base": {},
+        "breakpoints": {}
+      }
     }
   ]
 }

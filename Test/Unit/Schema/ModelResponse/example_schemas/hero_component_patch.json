@@ -22,7 +22,10 @@
                 "text": "Welcome to our site"
               }
             ],
-            "styles": {}
+            "styles": {
+              "base": {},
+              "breakpoints": {}
+            }
           }
         ]
       },
