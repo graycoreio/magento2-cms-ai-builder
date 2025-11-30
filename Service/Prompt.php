@@ -130,11 +130,18 @@ CRITICAL: You MUST return JSON Patch operations, NOT the full schema. The backen
 ```json
 {
   "type": "elementSchema",
-  "element": "div",  // Must be: div, span, h1-h6, p, ul, ol, li
-  "styles": { "base": {...}, "breakpoints": {...} },  // optional - see Styles section below
-  "children": [...]  // optional
+  "element": "div",
+  "attributes": {},
+  "styles": {
+    "base": { "display": "flex", "padding": "20px" },
+    "breakpoints": { "(min-width: 768px)": { "padding": "40px" } }
+  },
+  "children": []
 }
 ```
+- `element`: Must be div, span, h1-h6, p, ul, ol, li, section, article, header, footer, nav, main, aside, figure, figcaption, blockquote, pre, code, strong, em, br, hr
+- `styles`: ONLY contains a `base` property (which only contains CSS key-value pairs) and `breakpoints` for responsive CSS.
+- `children`: Array of textSchema, elementSchema, or componentSchema items
 
 **STYLES AND RESPONSIVE BREAKPOINTS:**
 
