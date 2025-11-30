@@ -21,9 +21,6 @@ class OpenAiModel implements OptionSourceInterface
             ['value' => 'gpt-5-nano', 'label' => __('GPT-5 Nano')],
             ['value' => 'gpt-5-mini', 'label' => __('GPT-5 Mini')],
             ['value' => 'gpt-5', 'label' => __('GPT-5')],
-            ['value' => 'gpt-4o', 'label' => __('GPT-4o')],
-            ['value' => 'gpt-4o-mini', 'label' => __('GPT-4o Mini')],
-            ['value' => 'gpt-4-turbo', 'label' => __('GPT-4 Turbo')],
         ];
     }
 }
