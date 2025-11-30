@@ -207,6 +207,8 @@ Add child: `{ "op": "add", "path": "/children/-", "value": { "type": "textSchema
 Remove item: `{ "op": "remove", "path": "/children/1" }`
 Update style: `{ "op": "replace", "path": "/styles/base/color", "value": "#ff0000" }`
 
+Return the JSON minified with no spaces, tabs, or newlines.
+
 Now generate the JSON Patch operations based on the user's request.
 PROMPT;
     }
